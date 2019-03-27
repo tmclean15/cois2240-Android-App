@@ -29,6 +29,6 @@ public class InventoryArrayAdapter extends ArrayAdapter<FoodTileInfo> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View foodTileView = inflater.inflate(R.layout.food_tile_layout, parent, false);
+        return inflater.inflate(R.layout.food_tile_layout, parent, false);
     }
 }

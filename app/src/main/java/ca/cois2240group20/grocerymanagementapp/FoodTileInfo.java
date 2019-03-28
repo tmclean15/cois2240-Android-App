@@ -9,9 +9,17 @@ public class FoodTileInfo {
     private Date expiryDate;
     private Double price;
     private int quantity;
-    private FoodGroup group;
+    private String foodGroup;
 
-
+    public FoodTileInfo(String product, Date purchaseDate, Date expiryDate, Double price,
+                        int quantity, String foodGroup) {
+        this.product = product;
+        this.purchaseDate = purchaseDate;
+        this.expiryDate = expiryDate;
+        this.price = price;
+        this.quantity = quantity;
+        this.foodGroup = foodGroup;
+    }
 
     public String getProduct() {
         return product;
@@ -53,11 +61,11 @@ public class FoodTileInfo {
         this.quantity = quantity;
     }
 
-    public FoodGroup getGroup() {
-        return group;
+    public String getFoodGroup() {
+        return foodGroup;
     }
 
-    public void setGroup(FoodGroup group) {
-        this.group = group;
+    public void setFoodGroup(String foodGroup) {
+        this.foodGroup = foodGroup;
     }
 }

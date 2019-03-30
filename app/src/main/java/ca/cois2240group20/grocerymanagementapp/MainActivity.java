@@ -3,7 +3,6 @@ package ca.cois2240group20.grocerymanagementapp;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -27,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.app_name);
             setSupportActionBar(toolbar);
         }
-
-        ActionBar actionBar = getSupportActionBar();
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -65,13 +62,9 @@ public class MainActivity extends AppCompatActivity {
                         // When swiping between pages, select the
                         // corresponding tab.
                         viewPager.setCurrentItem(position);
-
                     }
                 });
 
-        // We need to add the 3 action bar tabs
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Inventory"));
-        tabLayout.addTab(tabLayout.newTab().setText("Grocery List"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 }

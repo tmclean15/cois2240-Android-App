@@ -61,4 +61,7 @@ public class GroceryListFragment extends Fragment {
 
         return rootView;
     }
+
+    public void onFabClick(View view) {
+    }
 }

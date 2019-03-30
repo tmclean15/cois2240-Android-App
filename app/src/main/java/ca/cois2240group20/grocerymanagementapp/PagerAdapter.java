@@ -9,12 +9,18 @@ import ca.cois2240group20.grocerymanagementapp.page_fragments.HomeFragment;
 import ca.cois2240group20.grocerymanagementapp.page_fragments.InventoryFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
-
+    // tab titles
+    private String[] tabTitles = new String[]{"Home", "Inventory", "Grocery List"};
     int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabTitles[position];
     }
 
     // Gets called when viewPager.setCurrentItem() is called

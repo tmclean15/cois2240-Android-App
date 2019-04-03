@@ -1,4 +1,4 @@
-package ca.cois2240group20.grocerymanagementapp;
+package ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +26,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     // Gets called when viewPager.setCurrentItem() is called
     @Override
     public Fragment getItem(int position) {
+
         switch (position) {
             case 0:
                 return new HomeFragment();

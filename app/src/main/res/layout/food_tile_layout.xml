@@ -4,6 +4,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/AppTheme"
     android:layout_width="403dp"
     android:layout_height="37dp"
     android:layout_marginTop="16dp"
@@ -48,15 +49,6 @@
         tools:layout_editor_absoluteX="94dp"
         tools:layout_editor_absoluteY="116dp" />
 
-    <TextView
-        android:id="@+id/foodgroup"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:text="@string/foodgroup"
-        tools:layout_editor_absoluteX="203dp"
-        tools:layout_editor_absoluteY="116dp" />
-
     <ImageButton
         android:id="@+id/removeItem"
         android:layout_width="40dp"
@@ -64,7 +56,7 @@
         android:layout_weight="1"
         android:contentDescription="TODO"
         android:onClick="handleRemoveItem"
-        android:text="removeItem" />
+        android:src="@drawable/ic_delete_black_24dp" />
 
     <ImageButton
         android:id="@+id/editItem"
@@ -73,7 +65,8 @@
         android:layout_weight="1"
         android:contentDescription="TODO"
         android:onClick="handleEditItem"
-        android:text="editItem" />
+        android:src="@drawable/ic_edit_black_24dp"
+        />
 
 </LinearLayout>
 

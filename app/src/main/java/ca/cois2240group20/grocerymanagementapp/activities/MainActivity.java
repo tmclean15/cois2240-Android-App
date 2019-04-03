@@ -1,21 +1,33 @@
-package ca.cois2240group20.grocerymanagementapp;
+package ca.cois2240group20.grocerymanagementapp.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import ca.cois2240group20.grocerymanagementapp.R;
+import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
+import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
+
 public class MainActivity extends AppCompatActivity {
     // The viewPager is the main layout widget that will show all the different page fragments
     ViewPager viewPager;
     // The pagerAdapter is what handles which pages get shown in the viewPager
     PagerAdapter pagerAdapter;
+    // View model is a shared state among the activity and its associated fragments
+    SharedViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Set up view model for this activity. It will be used to share data with page fragments
+        model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 3);
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -66,5 +78,28 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+    }
+
+    // This callback will be called if AddFoodTileActivity sends an intent with user data for new
+    // product to be added
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if(intent.getStringExtra("method").equals("addInventory")) {
+            addInventory();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    private void addInventory() {
+        FoodTileInfo newInvData = getIntent().getParcelableExtra("FoodTileInfo");
+        model.addInventory(newInvData);
     }
 }

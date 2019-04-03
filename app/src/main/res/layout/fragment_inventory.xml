@@ -2,9 +2,11 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/inventory_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/inventory_recycler_view"
@@ -13,11 +15,13 @@
 
     </android.support.v7.widget.RecyclerView>
 
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabInventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
+        android:layout_margin="20dp"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible"

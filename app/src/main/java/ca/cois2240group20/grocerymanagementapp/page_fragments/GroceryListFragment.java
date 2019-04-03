@@ -39,6 +39,10 @@ public class GroceryListFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_grocerylist, container, false);
+
+        // Gets view model, that will persist for lifecycle of MainActivity.
+        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.grocerylist_recycler_view);
 
         // This setting will improve performance as the layout size of the RecyclerView will not
@@ -48,10 +52,8 @@ public class GroceryListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new InventoryAdapter(data);
+        adapter = new InventoryAdapter(data, recyclerView, model);
         recyclerView.setAdapter(adapter);
-
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         // Create the observer which updates the UI when live data in view model changes
         final Observer<List<FoodTileInfo>> observer = new Observer<List<FoodTileInfo>>() {

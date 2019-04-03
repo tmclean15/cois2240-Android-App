@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
+import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryViewHolder;
 import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
@@ -29,6 +31,7 @@ public class InventoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private SharedViewModel model;
 
     // Just some dummy data
     Date date = new Date();
@@ -47,15 +50,15 @@ public class InventoryFragment extends Fragment {
         // change with changes in content
         recyclerView.setHasFixedSize(true);
 
-        // Set up view model, that will persist for lifecycle of MainActivity
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        // Gets view model, that will persist for lifecycle of MainActivity
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         // Set up layout manager
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         // Set adapter for recycler view
-        adapter = new InventoryAdapter(data);
+        adapter = new InventoryAdapter(data, recyclerView, model);
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
@@ -63,7 +66,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final List<FoodTileInfo> newData) {
                 // TODO: Update the UI
-                adapter = new InventoryAdapter(newData);
+                adapter = new InventoryAdapter(newData, recyclerView, model);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -73,6 +76,7 @@ public class InventoryFragment extends Fragment {
         // Observe the live data in the view model
         model.getInventoryData().observe(this, observer);
 
+        // Outlines the behaviour of the floating action button
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabInventory);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,9 +85,6 @@ public class InventoryFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return rootView;
-
     }
-
 }

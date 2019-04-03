@@ -1,11 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-    <string name="app_name">GroceryManagementApp</string>
-    <string name="tab_label1">Home</string>
-    <string name="tab_label2">Inventory</string>
-    <string name="tab_label3">Grocery List</string>
-    <string name="product">product</string>
-    <string name="expiry">expiry</string>
-    <string name="quantity">quantity</string>
-    <string name="price">price</string>
-    <string name="foodgroup">foodgroup</string>
+    <string name="app_name" translatable="false">GroceryManagementApp</string>
+    <string name="tab_label1" translatable="false">Home</string>
+    <string name="tab_label2" translatable="false">Inventory</string>
+    <string name="tab_label3" translatable="false">Grocery List</string>
+    <string name="product" translatable="false"><u><b>Product</b></u></string>
+    <string name="expiry" translatable="false"><u><b>Expiry Date</b></u></string>
+    <string name="quantity" translatable="false"><u><b>Quantity</b></u></string>
+    <string name="price" translatable="false"><u><b>Price</b></u></string>
 </resources>

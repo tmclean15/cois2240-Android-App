@@ -38,4 +38,27 @@ public class SharedViewModel extends ViewModel {
         inventoryData.add(foodTile);
         inventoryLiveData.setValue(inventoryData);
     }
+
+    public void removeInventory(int index) {
+        inventoryData.remove(index);
+        inventoryLiveData.setValue(inventoryData);
+    }
+
+    public FoodTileInfo accessInventory(int index) {
+        return inventoryData.get(index);
+    }
+
+    public void addGroceryList(FoodTileInfo foodTile) {
+        groceryListData.add(foodTile);
+        groceryListLiveData.setValue(groceryListData);
+    }
+
+    public void removeGroceryList(int index) {
+        groceryListData.remove(index);
+        groceryListLiveData.setValue(groceryListData);
+    }
+
+    public FoodTileInfo accessGroceryList(int index) {
+        return groceryListData.get(index);
+    }
 }

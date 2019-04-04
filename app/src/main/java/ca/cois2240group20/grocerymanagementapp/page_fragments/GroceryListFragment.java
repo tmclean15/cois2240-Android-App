@@ -2,6 +2,7 @@ package ca.cois2240group20.grocerymanagementapp.page_fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
+import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.GroceryListAdapter;
 import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
@@ -27,6 +30,7 @@ public class GroceryListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private SharedViewModel model;
 
     // Just some dummy data
     Date date = new Date();
@@ -41,7 +45,7 @@ public class GroceryListFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_grocerylist, container, false);
 
         // Gets view model, that will persist for lifecycle of MainActivity.
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.grocerylist_recycler_view);
 
@@ -52,14 +56,17 @@ public class GroceryListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new InventoryAdapter(data, recyclerView, model);
+        adapter = new GroceryListAdapter(data, recyclerView, model);
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
         final Observer<List<FoodTileInfo>> observer = new Observer<List<FoodTileInfo>>() {
             @Override
-            public void onChanged(@Nullable List<FoodTileInfo> foodTileInfos) {
+            public void onChanged(@Nullable List<FoodTileInfo> newData) {
                 // Todo: update ui
+                adapter = new GroceryListAdapter(newData, recyclerView, model);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         };
 
@@ -70,9 +77,9 @@ public class GroceryListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View parentView = inflater.inflate(R.layout.activity_main, container, false);
-                ViewPager viewPager = (ViewPager) parentView.findViewById(R.id.pager);
-                viewPager.setCurrentItem(3);
+                Intent intent = new Intent(getContext(), AddFoodTileActivity.class);
+                intent.putExtra("method", "GroceryList");
+                startActivity(intent);
             }
         });
 

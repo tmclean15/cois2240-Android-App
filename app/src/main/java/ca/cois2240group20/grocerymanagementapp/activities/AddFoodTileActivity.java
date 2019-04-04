@@ -102,6 +102,10 @@ public class AddFoodTileActivity extends FragmentActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Packages up all of the data input by the user into a FoodTileInfo object, to
+                // be sent back to MainActivity
+
                 String product = Utility.trySetString(mDisplayProduct.getText().toString());
                 Date purchaseDate = Utility.tryParseDate(mDisplayPurchaseDate.getText().toString());
                 Date expiryDate = Utility.tryParseDate((mDisplayExpiryDate.getText().toString()));
@@ -112,9 +116,25 @@ public class AddFoodTileActivity extends FragmentActivity {
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("FoodTileInfo", data);
-                intent.putExtra("method", "addInventory");
-                // intent.setFlags(Intent.);
-                startActivity(intent);
+
+                // Depending on which fragment sent the intent (InventoryFragment or GroceryListFragment)
+                // a new intent will be sent back to MainActivity, with extra information to tell
+                // MainActivity whether to call addInventory or addGroceryList
+                if (getIntent().getStringExtra("method").equals("Inventory")) {
+                    intent.putExtra("method", "addInventory");
+                    startActivity(intent);
+                }
+                else if (getIntent().getStringExtra("method").equals("GroceryList")) {
+                    intent.putExtra("method", "addGroceryList");
+                    startActivity(intent);
+                }
+                else {
+                    // If the intent that launched this activity was not launched by either
+                    // Inventory or GroceryList, then an error occurred that should be handled
+                    // by MainActivity. This shouldn't happen, but just in case
+                    intent.putExtra("method", "error");
+                    startActivity(intent);
+                }
             }
         });
     }

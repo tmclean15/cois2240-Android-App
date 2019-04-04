@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
@@ -14,6 +15,8 @@ import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class MainActivity extends AppCompatActivity {
+    // This tag will be used to tag logs that come from this activity
+    private static final String TAG = "MainActivity";
     // The viewPager is the main layout widget that will show all the different page fragments
     ViewPager viewPager;
     // The pagerAdapter is what handles which pages get shown in the viewPager
@@ -82,13 +85,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // This callback will be called if AddFoodTileActivity sends an intent with user data for new
-    // product to be added
+    // product to be added (to either Inventory or Grocery List)
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         if(intent.getStringExtra("method").equals("addInventory")) {
             addInventory();
+        }
+        else if(intent.getStringExtra("method").equals("addGroceryList")) {
+            addGroceryList();
+        }
+        else if(intent.getStringExtra("method").equals("error")) {
+            Log.d(TAG, "Error with adding product");
         }
     }
 
@@ -101,5 +110,14 @@ public class MainActivity extends AppCompatActivity {
     private void addInventory() {
         FoodTileInfo newInvData = getIntent().getParcelableExtra("FoodTileInfo");
         model.addInventory(newInvData);
+        // We want to display the page that we initially clicked the floating action button
+        // to add an item from, in this case InventoryFragment
+        viewPager.setCurrentItem(1);
+    }
+
+    private void addGroceryList() {
+        FoodTileInfo newGroceryData = getIntent().getParcelableExtra("FoodTileInfo");
+        model.addGroceryList(newGroceryData);
+        viewPager.setCurrentItem(2);
     }
 }

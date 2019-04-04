@@ -82,6 +82,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddFoodTileActivity.class);
+                intent.putExtra("method", "Inventory");
                 startActivity(intent);
             }
         });

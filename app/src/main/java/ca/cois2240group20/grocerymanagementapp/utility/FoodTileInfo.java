@@ -1,20 +1,31 @@
 package ca.cois2240group20.grocerymanagementapp.utility;
 
+import android.arch.persistence.room.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Currency;
 import java.util.Date;
 
+@Entity
 public class FoodTileInfo implements Parcelable {
+    @PrimaryKey(autoGenerate = true) //Will auto make primary Key
+    private Integer id;
+    //Non-Identifying columns
+    @ColumnInfo(name = "product")
     private String product;
+    @ColumnInfo(name = "purchaseDate")
     private Date purchaseDate;
+    @ColumnInfo(name = "expiryDate")
     private Date expiryDate;
+    @ColumnInfo(name = "price")
     private Double price;
+    @ColumnInfo(name = "quantity")
     private Integer quantity;
 
-    public FoodTileInfo(String product, Date purchaseDate, Date expiryDate, Double price,
+    public FoodTileInfo(Integer id, String product, Date purchaseDate, Date expiryDate, Double price,
                         int quantity) {
+        this.id = id;
         this.product = product;
         this.purchaseDate = purchaseDate;
         this.expiryDate = expiryDate;

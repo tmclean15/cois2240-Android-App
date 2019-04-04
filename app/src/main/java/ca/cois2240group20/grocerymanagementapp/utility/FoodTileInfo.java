@@ -8,6 +8,7 @@ import java.util.Currency;
 import java.util.Date;
 
 @Entity
+@TypeConverters(DateConverter.class)
 public class FoodTileInfo implements Parcelable {
     @PrimaryKey(autoGenerate = true) //Will auto make primary Key
     private Integer id;
@@ -23,9 +24,8 @@ public class FoodTileInfo implements Parcelable {
     @ColumnInfo(name = "quantity")
     private Integer quantity;
 
-    public FoodTileInfo(Integer id, String product, Date purchaseDate, Date expiryDate, Double price,
+    public FoodTileInfo(String product, Date purchaseDate, Date expiryDate, Double price,
                         int quantity) {
-        this.id = id;
         this.product = product;
         this.purchaseDate = purchaseDate;
         this.expiryDate = expiryDate;
@@ -53,6 +53,14 @@ public class FoodTileInfo implements Parcelable {
             return new FoodTileInfo[size];
         }
     };
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getProduct() {
         return product;
@@ -86,11 +94,11 @@ public class FoodTileInfo implements Parcelable {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -107,4 +115,6 @@ public class FoodTileInfo implements Parcelable {
         dest.writeDouble(price == null ? 0 : price);
         dest.writeInt(quantity == null ? 0 : quantity);
     }
+
+
 }

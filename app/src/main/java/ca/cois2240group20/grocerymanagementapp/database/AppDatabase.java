@@ -10,7 +10,7 @@ import ca.cois2240group20.grocerymanagementapp.database.FoodTileDAO; //Data Acce
 
 
 
-@Database(entities = {FoodTileInfo.class}, version = 1)
+@Database(entities = {FoodTileInfo.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     //Database variable
     private static AppDatabase appDatabase = null;

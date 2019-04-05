@@ -67,7 +67,8 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHold
 
     @Override
     public int getItemCount() {
-        return foodTileData.size();
+        if (foodTileData == null) return 0;
+        else return foodTileData.size();
     }
 
     private void notifyChange() {

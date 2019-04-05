@@ -10,7 +10,6 @@ import java.util.List;
 import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 
 public class SharedViewModel extends ViewModel {
-
     // Todo: Write comment explaining why I need lists separate from the live data
     private List<FoodTileInfo> inventoryData;
     private MutableLiveData<List<FoodTileInfo>> inventoryLiveData;
@@ -26,12 +25,20 @@ public class SharedViewModel extends ViewModel {
         return inventoryLiveData;
     }
 
+    public List<FoodTileInfo> getAllInventory() {
+        return inventoryData;
+    }
+
     public LiveData<List<FoodTileInfo>> getGroceryListData() {
         if (groceryListLiveData == null) {
             groceryListData = new ArrayList<FoodTileInfo>();
             groceryListLiveData = new MutableLiveData<List<FoodTileInfo>>();
         }
         return groceryListLiveData;
+    }
+
+    public List<FoodTileInfo> getAllGroceryList() {
+        return groceryListData;
     }
 
     public void addInventory(FoodTileInfo foodTile) {

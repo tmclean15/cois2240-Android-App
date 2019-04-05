@@ -1,6 +1,7 @@
 package ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
 import ca.cois2240group20.grocerymanagementapp.activities.MainActivity;
 import ca.cois2240group20.grocerymanagementapp.utility.App;
 import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
@@ -37,22 +39,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
         View view = (View) LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.food_tile_layout_test, viewGroup, false);
         ImageButton removeButton = (ImageButton) view.findViewById(R.id.removeItem);
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
-                int indexOfFoodTile = holder.getAdapterPosition();
-                model.addGroceryList(model.accessInventory(indexOfFoodTile));
-                model.removeInventory(indexOfFoodTile);
-                notifyChange();
-            }
-        });
+        removeButton.setOnClickListener(removeListener);
+        ImageButton editButton = (ImageButton) view.findViewById(R.id.editItem);
+        editButton.setOnClickListener(editListener);
         return new InventoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final InventoryViewHolder holder, int position) {
-        // When a food tile is created, the text in the view gets set with data from FoodTileData objects
+        // When a food tile is created, the UI gets set with data from FoodTileData objects
         View foodTileView = holder.foodTile;
         TextView product = foodTileView.findViewById(R.id.product);
         product.setText(Utility.trySetString(foodTileData.get(position).getProduct()));
@@ -63,19 +58,42 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
         TextView price = foodTileView.findViewById(R.id.price);
         price.setText(Utility.trySetString(Double.toString(foodTileData.get(position).getPrice())));
 
-        /*ImageButton removeButton = (ImageButton) foodTileView.findViewById(R.id.removeItem);
-        removeButton.setTag(this);
-        ImageButton editButton = (ImageButton) foodTileView.findViewById(R.id.editItem);
-        editButton.setTag(this);*/
-
     }
 
     @Override
     public int getItemCount() {
-        return foodTileData.size();
+        if (foodTileData == null) return 0;
+        else return foodTileData.size();
     }
 
     private void notifyChange() {
         this.notifyDataSetChanged();
     }
+
+    // Used for remove button
+    View.OnClickListener removeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
+            int indexOfFoodTile = holder.getAdapterPosition();
+            model.addGroceryList(model.accessInventory(indexOfFoodTile));
+            model.removeInventory(indexOfFoodTile);
+            notifyChange();
+        }
+    };
+
+    // Used for edit button
+    View.OnClickListener editListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
+            int indexOfFoodTile = holder.getAdapterPosition();
+            FoodTileInfo dataOfFoodTile = model.accessInventory(indexOfFoodTile);
+            Intent intent = new Intent(view.getContext(), AddFoodTileActivity.class);
+            intent.putExtra("FoodTileInfo", dataOfFoodTile);
+            intent.putExtra("index", indexOfFoodTile);
+            intent.putExtra("edit", "Inventory");
+            view.getContext().startActivity(intent);
+        }
+    };
 }

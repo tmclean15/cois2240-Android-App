@@ -31,18 +31,43 @@ public class AddFoodTileActivity extends FragmentActivity {
     private DatePickerDialog.OnDateSetListener mPurchaseDateSetListener;
     private DatePickerDialog.OnDateSetListener mExpiryDateSetListener;
 
-    private FoodTileInfo data;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_food_tile);
+
+        // This grabs the intent that launched the activity. It will provide info about
+        // what actions to perform
+        final Intent launchIntent = getIntent();
 
         mDisplayProduct = (EditText) findViewById(R.id.addProduct);
         mDisplayQuantity = (EditText) findViewById(R.id.addQuantity);
         mDisplayPrice = (EditText) findViewById(R.id.addPrice);
         mDisplayPurchaseDate = (EditText) findViewById(R.id.addPurchaseDate);
         mDisplayExpiryDate = (EditText) findViewById(R.id.addExpiryDate);
+
+        // If this activity was launched from an edit button listener, we want to pre-populate
+        // the UI with the data of the food tile being edited
+        FoodTileInfo dataToBeEdited;
+        if (launchIntent.getStringExtra("edit") != null) {
+            dataToBeEdited = launchIntent.getParcelableExtra("FoodTileInfo");
+            mDisplayProduct.setText(Utility.trySetString(dataToBeEdited.getProduct()));
+            String purchaseDateText = Utility.trySetDateString(dataToBeEdited.getPurchaseDate());
+            mDisplayPurchaseDate.setText(purchaseDateText);
+            String expiryDateText = Utility.trySetDateString(dataToBeEdited.getExpiryDate());
+            mDisplayExpiryDate.setText(expiryDateText);
+            String priceText = Utility.trySetString(dataToBeEdited.getPrice().toString());
+            mDisplayPrice.setText(priceText);
+            String quantityText = Utility.trySetString(dataToBeEdited.getQuantity().toString());
+            mDisplayQuantity.setText(quantityText);
+
+            if (launchIntent.getStringExtra("edit").equals("Inventory")) {
+
+            }
+        }
+
+        // The next few lines of code set up the DatePickerDialog widgets, along with listeners to
+        // display the proper dates selected in the purchase date and expiry date text fields
 
         mDisplayPurchaseDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +137,7 @@ public class AddFoodTileActivity extends FragmentActivity {
                 Double price = Utility.tryParseDouble(mDisplayPrice.getText().toString());
                 int quantity = Utility.tryParseInt(mDisplayQuantity.getText().toString());
 
-                data = new FoodTileInfo(product, purchaseDate, expiryDate, price, quantity);
+                FoodTileInfo data = new FoodTileInfo(product, purchaseDate, expiryDate, price, quantity);
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("FoodTileInfo", data);
@@ -120,15 +145,13 @@ public class AddFoodTileActivity extends FragmentActivity {
                 // Depending on which fragment sent the intent (InventoryFragment or GroceryListFragment)
                 // a new intent will be sent back to MainActivity, with extra information to tell
                 // MainActivity whether to call addInventory or addGroceryList
-                if (getIntent().getStringExtra("method").equals("Inventory")) {
+                if (launchIntent.getStringExtra("method").equals("Inventory")) {
                     intent.putExtra("method", "addInventory");
                     startActivity(intent);
-                }
-                else if (getIntent().getStringExtra("method").equals("GroceryList")) {
+                } else if (launchIntent.getStringExtra("method").equals("GroceryList")) {
                     intent.putExtra("method", "addGroceryList");
                     startActivity(intent);
-                }
-                else {
+                } else {
                     // If the intent that launched this activity was not launched by either
                     // Inventory or GroceryList, then an error occurred that should be handled
                     // by MainActivity. This shouldn't happen, but just in case

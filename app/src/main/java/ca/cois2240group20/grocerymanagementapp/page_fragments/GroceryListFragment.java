@@ -32,12 +32,12 @@ public class GroceryListFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private SharedViewModel model;
 
-    // Just some dummy data
+    /*// Just some dummy data
     Date date = new Date();
     FoodTileInfo tile1 = new FoodTileInfo("apples", date, date, 20.00, 5);
     FoodTileInfo tile2 = new FoodTileInfo("apples", date, date, 20.00, 5);
     FoodTileInfo tile3 = new FoodTileInfo("apples", date, date, 20.00, 5);
-    List<FoodTileInfo> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));
+    List<FoodTileInfo> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));*/
 
     @Override
     public View onCreateView(final LayoutInflater inflater,
@@ -56,7 +56,7 @@ public class GroceryListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new GroceryListAdapter(data, recyclerView, model);
+        adapter = new GroceryListAdapter(model.getAllGroceryList(), recyclerView, model);
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes

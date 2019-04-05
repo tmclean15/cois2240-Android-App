@@ -9,19 +9,27 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
+<<<<<<< HEAD
 import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
 import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
+=======
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
+>>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 import ca.cois2240group20.grocerymanagementapp.utility.App;
 
 public class MainActivity extends AppCompatActivity {
+    // This tag will be used to tag logs that come from this activity
+    private static final String TAG = "MainActivity";
     // The viewPager is the main layout widget that will show all the different page fragments
     ViewPager viewPager;
     // The pagerAdapter is what handles which pages get shown in the viewPager
@@ -39,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
+<<<<<<< HEAD
         //Get Data from Database - Inventory
         database = App.getAppDataBase();
         //load inventory
@@ -49,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         model.setGroceryData(grocery);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 3);
+=======
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 2);
+>>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
 
@@ -101,13 +113,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // This callback will be called if AddFoodTileActivity sends an intent with user data for new
-    // product to be added
+    // product to be added (to either Inventory or Grocery List)
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if(intent.getStringExtra("method").equals("addInventory")) {
-            addInventory();
+        if (intent.getStringExtra("method") != null) {
+            if (intent.getStringExtra("method").equals("addInventory")) {
+                addInventory();
+            } else if (intent.getStringExtra("method").equals("addGroceryList")) {
+                addGroceryList();
+            } else if (intent.getStringExtra("method").equals("error")) {
+                Log.d(TAG, "Error with adding product");
+            }
+        }
+        if (intent.getStringExtra("edit") != null) {
+            if (intent.getStringExtra("edit").equals("editInventory")) {
+                editInventory();
+            } else if (intent.getStringExtra("edit").equals("editGroceryList")) {
+                editGroceryList();
+            } else if (intent.getStringExtra("edit").equals("error")) {
+                Log.d(TAG, "Error with editing product");
+            }
         }
     }
 
@@ -120,6 +147,29 @@ public class MainActivity extends AppCompatActivity {
     private void addInventory() {
         FoodTileInfoInventory newInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
         model.addInventory(newInvData);
+        // We want to display the page that we initially clicked the floating action button
+        // to add an item from, in this case InventoryFragment
+        viewPager.setCurrentItem(0);
+    }
+
+    private void editInventory() {
+        FoodTileInfoInventory editedInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
+        int indexToEdit = getIntent().getIntExtra("index", -1);
+        model.editInventory(editedInvData, indexToEdit);
+        viewPager.setCurrentItem(0);
+    }
+
+    private void addGroceryList() {
+        FoodTileInfoGroceryList newGroceryData = getIntent().getParcelableExtra("FoodTileInfoGroceryList");
+        model.addGroceryList(newGroceryData);
+        viewPager.setCurrentItem(1);
+    }
+
+    private void editGroceryList() {
+        FoodTileInfoGroceryList editedGroceryData = getIntent().getParcelableExtra("FoodTileInfoGroceryList");
+        int indexToEdit = getIntent().getIntExtra("index", -1);
+        model.editGroceryList(editedGroceryData, indexToEdit);
+        viewPager.setCurrentItem(1);
     }
 
     //onStop saves data altered in SharedViewModel by clearing old data from tables and inserting

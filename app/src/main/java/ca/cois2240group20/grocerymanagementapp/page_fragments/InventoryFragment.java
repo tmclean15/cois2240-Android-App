@@ -13,15 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
+<<<<<<< HEAD
 import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
+=======
+>>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 
@@ -32,11 +33,19 @@ public class InventoryFragment extends Fragment {
     private SharedViewModel model;
 
     // Just some dummy data
+<<<<<<< HEAD
     Date date = new Date();
     FoodTileInfoInventory tile1 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
     FoodTileInfoInventory tile2 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
     FoodTileInfoInventory tile3 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
     List<FoodTileInfoInventory> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));
+=======
+    /*Date date = new Date();
+    FoodTileInfo tile1 = new FoodTileInfo("apples", date, date, 20.00, 5);
+    FoodTileInfo tile2 = new FoodTileInfo("apples", date, date, 20.00, 5);
+    FoodTileInfo tile3 = new FoodTileInfo("apples", date, date, 20.00, 5);
+    List<FoodTileInfo> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));*/
+>>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -56,14 +65,17 @@ public class InventoryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // Set adapter for recycler view
-        adapter = new InventoryAdapter(data, recyclerView, model);
+        adapter = new InventoryAdapter(model.getAllInventory(), recyclerView, model);
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
         final Observer<List<FoodTileInfoInventory>> observer = new Observer<List<FoodTileInfoInventory>>() {
             @Override
             public void onChanged(@Nullable final List<FoodTileInfoInventory> newData) {
+<<<<<<< HEAD
                 // TODO: Update the UI
+=======
+>>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
                 adapter = new InventoryAdapter(newData, recyclerView, model);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -80,6 +92,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddFoodTileActivity.class);
+                intent.putExtra("method", "Inventory");
                 startActivity(intent);
             }
         });

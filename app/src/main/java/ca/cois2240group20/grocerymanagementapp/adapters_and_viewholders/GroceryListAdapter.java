@@ -1,9 +1,6 @@
 package ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders;
 
-<<<<<<< HEAD
-=======
 import android.content.Intent;
->>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,23 +11,18 @@ import android.widget.TextView;
 
 import java.util.List;
 
-<<<<<<< HEAD
-import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
-=======
+import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
-import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
->>>>>>> 2c84a427757f680022f6749e9a0644357a3212b2
-import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
-public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> {
-    private List<FoodTileInfoInventory> foodTileData;
+public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHolder> {
+    private List<FoodTileInfoGroceryList> foodTileData;
     private RecyclerView recyclerView;
     private SharedViewModel model;
 
-    public InventoryAdapter(List<FoodTileInfoInventory> data, RecyclerView recycler, SharedViewModel viewModel) {
+    public GroceryListAdapter(List<FoodTileInfoGroceryList> data, RecyclerView recycler, SharedViewModel viewModel) {
         foodTileData = data;
         recyclerView = recycler;
         model = viewModel;
@@ -39,19 +31,25 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
 
     @NonNull
     @Override
-    public InventoryViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
+    public GroceryListViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
         View view = (View) LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.food_tile_layout, viewGroup, false);
         ImageButton removeButton = (ImageButton) view.findViewById(R.id.removeItem);
-        removeButton.setOnClickListener(removeListener);
-        ImageButton editButton = (ImageButton) view.findViewById(R.id.editItem);
-        editButton.setOnClickListener(editListener);
-        return new InventoryViewHolder(view);
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
+                int indexOfFoodTile = holder.getAdapterPosition();
+                model.removeGroceryList(indexOfFoodTile);
+                notifyChange();
+            }
+        });
+        return new GroceryListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final InventoryViewHolder holder, int position) {
-        // When a food tile is created, the UI gets set with data from FoodTileData objects
+    public void onBindViewHolder(@NonNull final GroceryListViewHolder holder, int position) {
+        // When a food tile is created, the text in the view gets set with data from FoodTileData objects
         View foodTileView = holder.foodTile;
         TextView product = foodTileView.findViewById(R.id.product);
         product.setText(Utility.trySetString(foodTileData.get(position).getProduct()));
@@ -62,6 +60,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
         TextView price = foodTileView.findViewById(R.id.price);
         price.setText(Utility.trySetString(Double.toString(foodTileData.get(position).getPrice())));
 
+        ImageButton removeButton = (ImageButton) foodTileView.findViewById(R.id.removeItem);
+        removeButton.setOnClickListener(removeListener);
+        ImageButton editButton = (ImageButton) foodTileView.findViewById(R.id.editItem);
+        editButton.setOnClickListener(editListener);
     }
 
     @Override
@@ -80,12 +82,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
         public void onClick(View view) {
             RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
             int indexOfFoodTile = holder.getAdapterPosition();
-            FoodTileInfoInventory inventoryData = model.accessInventory(indexOfFoodTile);
-            FoodTileInfoGroceryList groceryData = new FoodTileInfoGroceryList(inventoryData.getProduct(),
-                    inventoryData.getPurchaseDate(), inventoryData.getExpiryDate(),
-                    inventoryData.getPrice(), inventoryData.getQuantity());
-            model.addGroceryList(groceryData);
-            model.removeInventory(indexOfFoodTile);
+            model.removeGroceryList(indexOfFoodTile);
             notifyChange();
         }
     };
@@ -96,11 +93,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> 
         public void onClick(View view) {
             RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
             int indexOfFoodTile = holder.getAdapterPosition();
-            FoodTileInfoInventory dataOfFoodTile = model.accessInventory(indexOfFoodTile);
+            FoodTileInfoGroceryList dataOfFoodTile = model.accessGroceryList(indexOfFoodTile);
             Intent intent = new Intent(view.getContext(), AddFoodTileActivity.class);
-            intent.putExtra("FoodTileInfoInventory", dataOfFoodTile);
+            intent.putExtra("FoodTileInfoGroceryList", dataOfFoodTile);
             intent.putExtra("index", indexOfFoodTile);
-            intent.putExtra("edit", "Inventory");
+            intent.putExtra("edit", "GroceryList");
             view.getContext().startActivity(intent);
         }
     };

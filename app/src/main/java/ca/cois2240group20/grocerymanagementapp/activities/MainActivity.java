@@ -43,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
+        if (database.foodTileDAO().getInventoryData() == null) {
+            database.foodTileDAO().insertInventory(model.getAllInventory());
+        }
+        if (database.foodTileDAO().getGroceryListData() == null) {
+            database.foodTileDAO().insertGroceryList(model.getAllGroceryList());
+        }
+
         // Loads in data from the database into the view model
         loadInDatabaseData(database, model);
 
@@ -168,14 +175,16 @@ public class MainActivity extends AppCompatActivity {
         //Delete current contents
         database.foodTileDAO().deleteInventory();
         //Insert Live Data into new table
-        LiveData<List<FoodTileInfoInventory>> inventory = model.getInventoryData();
+        //LiveData<List<FoodTileInfoInventory>> inventory = model.getInventoryData();
+        List<FoodTileInfoInventory> inventory = model.getAllInventory();
         database.foodTileDAO().insertInventory(inventory);
 
         //Update tables in database (grocery)
         //delete current contents
         database.foodTileDAO().deleteGroceryList();
         //Insert Live Data into new table
-        LiveData<List<FoodTileInfoGroceryList>> grocery = model.getGroceryListData();
+        //LiveData<List<FoodTileInfoGroceryList>> grocery = model.getGroceryListData();
+        List<FoodTileInfoGroceryList> grocery = model.getAllGroceryList();
         database.foodTileDAO().insertGroceryList(grocery);
 
     }

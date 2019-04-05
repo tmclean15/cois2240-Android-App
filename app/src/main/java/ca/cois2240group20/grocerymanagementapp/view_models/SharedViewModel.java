@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
@@ -19,10 +20,10 @@ public class SharedViewModel extends ViewModel {
     // lists via a call to set value in all of the public methods in this class
 
     private List<FoodTileInfoInventory> inventoryData;
-    private MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData;
+    private MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData = new MutableLiveData<>();
 
     private List<FoodTileInfoGroceryList> groceryListData;
-    private MutableLiveData<List<FoodTileInfoGroceryList>> groceryListLiveData;
+    private MutableLiveData<List<FoodTileInfoGroceryList>> groceryListLiveData = new MutableLiveData<>();
 
     public LiveData<List<FoodTileInfoInventory>> getInventoryData() {
         if (inventoryLiveData == null) {
@@ -33,14 +34,20 @@ public class SharedViewModel extends ViewModel {
     }
 
     public void setInventoryData(AppDatabase database) {
-        inventoryLiveData = database.foodTileDAO().getInventoryData();
+        inventoryData = database.foodTileDAO().getInventoryData();
+        inventoryLiveData.setValue(database.foodTileDAO().getInventoryData());
     }
 
     public void setGroceryListData(AppDatabase database) {
-        groceryListLiveData = database.foodTileDAO().getGroceryListData();
+        groceryListData = database.foodTileDAO().getGroceryListData();
+        groceryListLiveData.setValue(database.foodTileDAO().getGroceryListData());
     }
 
     public List<FoodTileInfoInventory> getAllInventory() {
+        if (inventoryData == null) {
+            inventoryData = new ArrayList<FoodTileInfoInventory>();
+            inventoryLiveData.setValue(inventoryData);
+        }
         return inventoryData;
     }
 
@@ -53,6 +60,10 @@ public class SharedViewModel extends ViewModel {
     }
 
     public List<FoodTileInfoGroceryList> getAllGroceryList() {
+        if (groceryListData == null) {
+            groceryListData = new ArrayList<FoodTileInfoGroceryList>();
+            groceryListLiveData.setValue(groceryListData);
+        }
         return groceryListData;
     }
 

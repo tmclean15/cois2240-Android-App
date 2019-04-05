@@ -10,18 +10,20 @@ import ca.cois2240group20.grocerymanagementapp.database.entities.*;
 //Util Import
 import java.util.List;
 
-//Data Access Object, executes querys on the FoodTile entity (table)
+//Data Access Object, executes queries on the FoodTile entity (table)
 @Dao
 public interface FoodTileDAO {
     //Query
 
     //Get EVERYTHING from inventory
     @Query("SELECT * FROM Inventory")
-    MutableLiveData<List<FoodTileInfoInventory>> getInventoryData();
+    //MutableLiveData<List<FoodTileInfoInventory>> getInventoryData();
+    List<FoodTileInfoInventory> getInventoryData();
 
     //Get EVERYTHING from Grocery
     @Query("SELECT * FROM Grocery")
-    MutableLiveData<List<FoodTileInfoGroceryList>> getGroceryListData();
+    //MutableLiveData<List<FoodTileInfoGroceryList>> getGroceryListData();
+    List<FoodTileInfoGroceryList> getGroceryListData();
 
     //Update Inventory table onClose for persistence
     //First delete current Inventory Table
@@ -29,7 +31,7 @@ public interface FoodTileDAO {
     void deleteInventory();
     //Insert pass liveData list to insert into table
     @Insert
-    void insertInventory(FoodTileInfoInventory... inventoryLiveData);
+    void insertInventory(List<FoodTileInfoInventory> inventoryLiveData);
 
     //Update Grocery List table onClose
     //First Delete current Grocery Table
@@ -37,7 +39,7 @@ public interface FoodTileDAO {
     void deleteGroceryList();
     //Insert New Live Data
     @Insert
-    void insertGroceryList(FoodTileInfoGroceryList... groceryListLiveData);
+    void insertGroceryList(List<FoodTileInfoGroceryList> groceryListLiveData);
 
 
 }

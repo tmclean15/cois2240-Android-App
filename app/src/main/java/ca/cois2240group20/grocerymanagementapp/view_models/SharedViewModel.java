@@ -15,7 +15,7 @@ public class SharedViewModel extends ViewModel {
     // Todo: Write comment explaining why I need lists separate from the live data
     //Invetory List Table
     private List<FoodTileInfoInventory> inventoryData;
-    private MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData;
+    public MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData;
 
     //Grocery List Table
     private List<FoodTileInfoGroceryList> groceryListData;

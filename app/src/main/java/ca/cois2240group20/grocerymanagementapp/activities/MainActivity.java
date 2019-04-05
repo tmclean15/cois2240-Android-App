@@ -1,5 +1,7 @@
 package ca.cois2240group20.grocerymanagementapp.activities;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.R;
@@ -118,4 +121,27 @@ public class MainActivity extends AppCompatActivity {
         FoodTileInfoInventory newInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
         model.addInventory(newInvData);
     }
+
+    //onStop saves data altered in SharedViewModel by clearing old data from tables and inserting
+    // new data from livedata
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        //Update tables in database (inventory)
+        //Delete current contents
+        database.foodTileDAO().deleteInventory();
+        //Insert Live Data into new table
+        LiveData<List<FoodTileInfoInventory>> inventory = model.getInventoryData();
+        database.foodTileDAO().insertInventory(inventory);
+
+        //Update tables in database (grocery)
+        //delete current contents
+        database.foodTileDAO().deleteGroceryList();
+        //Insert Live Data into new table
+        LiveData<List<FoodTileInfoGroceryList>> grocery = model.getGroceryListData();
+        database.foodTileDAO().insertGroceryList(grocery);
+
+    }
 }
+

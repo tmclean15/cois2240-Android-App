@@ -1,5 +1,6 @@
 package ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.R;
+import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
 import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
@@ -58,11 +60,10 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHold
         TextView price = foodTileView.findViewById(R.id.price);
         price.setText(Utility.trySetString(Double.toString(foodTileData.get(position).getPrice())));
 
-        /*ImageButton removeButton = (ImageButton) foodTileView.findViewById(R.id.removeItem);
-        removeButton.setTag(this);
+        ImageButton removeButton = (ImageButton) foodTileView.findViewById(R.id.removeItem);
+        removeButton.setOnClickListener(removeListener);
         ImageButton editButton = (ImageButton) foodTileView.findViewById(R.id.editItem);
-        editButton.setTag(this);*/
-
+        editButton.setOnClickListener(editListener);
     }
 
     @Override
@@ -74,4 +75,30 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHold
     private void notifyChange() {
         this.notifyDataSetChanged();
     }
+
+    // Used for remove button
+    View.OnClickListener removeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
+            int indexOfFoodTile = holder.getAdapterPosition();
+            model.removeGroceryList(indexOfFoodTile);
+            notifyChange();
+        }
+    };
+
+    // Used for edit button
+    View.OnClickListener editListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
+            int indexOfFoodTile = holder.getAdapterPosition();
+            FoodTileInfo dataOfFoodTile = model.accessGroceryList(indexOfFoodTile);
+            Intent intent = new Intent(view.getContext(), AddFoodTileActivity.class);
+            intent.putExtra("FoodTileInfo", dataOfFoodTile);
+            intent.putExtra("index", indexOfFoodTile);
+            intent.putExtra("edit", "GroceryList");
+            view.getContext().startActivity(intent);
+        }
+    };
 }

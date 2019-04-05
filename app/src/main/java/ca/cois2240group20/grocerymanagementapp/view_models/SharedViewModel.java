@@ -51,6 +51,11 @@ public class SharedViewModel extends ViewModel {
         inventoryLiveData.setValue(inventoryData);
     }
 
+    public void editInventory(FoodTileInfo data, int index) {
+        inventoryData.set(index, data);
+        inventoryLiveData.setValue(inventoryData);
+    }
+
     public FoodTileInfo accessInventory(int index) {
         return inventoryData.get(index);
     }
@@ -62,6 +67,11 @@ public class SharedViewModel extends ViewModel {
 
     public void removeGroceryList(int index) {
         groceryListData.remove(index);
+        groceryListLiveData.setValue(groceryListData);
+    }
+
+    public void editGroceryList(FoodTileInfo data, int index) {
+        groceryListData.set(index, data);
         groceryListLiveData.setValue(groceryListData);
     }
 

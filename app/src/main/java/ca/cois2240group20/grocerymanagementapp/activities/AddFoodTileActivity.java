@@ -60,10 +60,6 @@ public class AddFoodTileActivity extends FragmentActivity {
             mDisplayPrice.setText(priceText);
             String quantityText = Utility.trySetString(dataToBeEdited.getQuantity().toString());
             mDisplayQuantity.setText(quantityText);
-
-            if (launchIntent.getStringExtra("edit").equals("Inventory")) {
-
-            }
         }
 
         // The next few lines of code set up the DatePickerDialog widgets, along with listeners to
@@ -145,18 +141,40 @@ public class AddFoodTileActivity extends FragmentActivity {
                 // Depending on which fragment sent the intent (InventoryFragment or GroceryListFragment)
                 // a new intent will be sent back to MainActivity, with extra information to tell
                 // MainActivity whether to call addInventory or addGroceryList
-                if (launchIntent.getStringExtra("method").equals("Inventory")) {
-                    intent.putExtra("method", "addInventory");
-                    startActivity(intent);
-                } else if (launchIntent.getStringExtra("method").equals("GroceryList")) {
-                    intent.putExtra("method", "addGroceryList");
-                    startActivity(intent);
-                } else {
-                    // If the intent that launched this activity was not launched by either
-                    // Inventory or GroceryList, then an error occurred that should be handled
-                    // by MainActivity. This shouldn't happen, but just in case
-                    intent.putExtra("method", "error");
-                    startActivity(intent);
+
+                if (launchIntent.getStringExtra("method") != null) {
+                    if (launchIntent.getStringExtra("method").equals("Inventory")) {
+                        intent.putExtra("method", "addInventory");
+                        startActivity(intent);
+                    } else if (launchIntent.getStringExtra("method").equals("GroceryList")) {
+                        intent.putExtra("method", "addGroceryList");
+                        startActivity(intent);
+                    } else {
+                        // If the intent that launched this activity was not launched by either
+                        // Inventory or GroceryList, then an error occurred that should be handled
+                        // by MainActivity. This shouldn't happen, but just in case
+                        intent.putExtra("method", "error");
+                        startActivity(intent);
+                    }
+                }
+
+                // If the activity was launched from an edit button, this code will execute instead
+                if (launchIntent.getStringExtra("edit") != null) {
+                    int indexBeingEdited = launchIntent.getIntExtra("index", -1);
+                    if (launchIntent.getStringExtra("edit").equals("Inventory")) {
+                        intent.putExtra("edit", "editInventory");
+                        intent.putExtra("index", indexBeingEdited);
+                        startActivity(intent);
+                    }
+                    else if (launchIntent.getStringExtra("edit").equals("GroceryList")) {
+                        intent.putExtra("edit", "editGroceryList");
+                        intent.putExtra("index", indexBeingEdited);
+                        startActivity(intent);
+                    }
+                    else {
+                        intent.putExtra("edit", "error");
+                        startActivity(intent);
+                    }
                 }
             }
         });

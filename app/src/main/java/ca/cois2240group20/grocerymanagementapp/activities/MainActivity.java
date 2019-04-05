@@ -90,14 +90,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if(intent.getStringExtra("method").equals("addInventory")) {
-            addInventory();
+        if (intent.getStringExtra("method") != null) {
+            if (intent.getStringExtra("method").equals("addInventory")) {
+                addInventory();
+            } else if (intent.getStringExtra("method").equals("addGroceryList")) {
+                addGroceryList();
+            } else if (intent.getStringExtra("method").equals("error")) {
+                Log.d(TAG, "Error with adding product");
+            }
         }
-        else if(intent.getStringExtra("method").equals("addGroceryList")) {
-            addGroceryList();
-        }
-        else if(intent.getStringExtra("method").equals("error")) {
-            Log.d(TAG, "Error with adding product");
+        if (intent.getStringExtra("edit") != null) {
+            if (intent.getStringExtra("edit").equals("editInventory")) {
+                editInventory();
+            } else if (intent.getStringExtra("edit").equals("editGroceryList")) {
+                editGroceryList();
+            } else if (intent.getStringExtra("edit").equals("error")) {
+                Log.d(TAG, "Error with editing product");
+            }
         }
     }
 
@@ -115,9 +124,23 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(1);
     }
 
+    private void editInventory() {
+        FoodTileInfo editedInvData = getIntent().getParcelableExtra("FoodTileInfo");
+        int indexToEdit = getIntent().getIntExtra("index", -1);
+        model.editInventory(editedInvData, indexToEdit);
+        viewPager.setCurrentItem(1);
+    }
+
     private void addGroceryList() {
         FoodTileInfo newGroceryData = getIntent().getParcelableExtra("FoodTileInfo");
         model.addGroceryList(newGroceryData);
+        viewPager.setCurrentItem(2);
+    }
+
+    private void editGroceryList() {
+        FoodTileInfo editedGroceryData = getIntent().getParcelableExtra("FoodTileInfo");
+        int indexToEdit = getIntent().getIntExtra("index", -1);
+        model.editGroceryList(editedGroceryData, indexToEdit);
         viewPager.setCurrentItem(2);
     }
 }

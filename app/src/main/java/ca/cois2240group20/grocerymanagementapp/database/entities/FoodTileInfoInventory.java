@@ -3,15 +3,18 @@ package ca.cois2240group20.grocerymanagementapp.database.entities;
 import android.arch.persistence.room.*;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
+import java.util.Random;
 
 import ca.cois2240group20.grocerymanagementapp.utility.DateConverter;
 
 @Entity (tableName = "Inventory")
 @TypeConverters(DateConverter.class)
 public class FoodTileInfoInventory implements Parcelable {
-    @PrimaryKey(autoGenerate = true) //Will auto make primary Key
+    @NonNull
+    @PrimaryKey(autoGenerate = true)//Will auto make primary Key
     private Integer id;
     //Non-Identifying columns
     @ColumnInfo(name = "product")

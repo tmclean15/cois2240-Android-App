@@ -3,6 +3,7 @@ package ca.cois2240group20.grocerymanagementapp.database.entities;
 import android.arch.persistence.room.*;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import ca.cois2240group20.grocerymanagementapp.utility.DateConverter;
 @Entity (tableName = "Grocery")
 @TypeConverters(DateConverter.class)
 public class FoodTileInfoGroceryList implements Parcelable {
+    @NonNull
     @PrimaryKey(autoGenerate = true) //Will auto make primary Key
     private Integer id;
     //Non-Identifying columns

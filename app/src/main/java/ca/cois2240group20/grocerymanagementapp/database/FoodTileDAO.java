@@ -29,16 +29,18 @@ public interface FoodTileDAO {
     //First delete current Inventory Table
     @Query("DELETE FROM Inventory")
     void deleteInventory();
+
     //Insert pass liveData list to insert into table
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertInventory(List<FoodTileInfoInventory> inventoryLiveData);
 
     //Update Grocery List table onClose
     //First Delete current Grocery Table
-    @Query("DELETE FROM Inventory")
+    @Query("DELETE FROM Grocery")
     void deleteGroceryList();
+
     //Insert New Live Data
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertGroceryList(List<FoodTileInfoGroceryList> groceryListLiveData);
 
 

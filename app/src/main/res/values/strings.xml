@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-    <string name="app_name" translatable="false">GroceryManagementApp</string>
-    <string name="tab_label1" translatable="false">Home</string>
+    <string name="app_name" translatable="false">Grocery Manager</string>
     <string name="tab_label2" translatable="false">Inventory</string>
     <string name="tab_label3" translatable="false">Grocery List</string>
     <string name="product" translatable="false"><u><b>Product</b></u></string>

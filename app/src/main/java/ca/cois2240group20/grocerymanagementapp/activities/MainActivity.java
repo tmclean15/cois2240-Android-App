@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import java.util.List;
+
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
+import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     PagerAdapter pagerAdapter;
     // View model is a shared state among the activity and its associated fragments
     SharedViewModel model;
+
+    private AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,5 +148,27 @@ public class MainActivity extends AppCompatActivity {
         int indexToEdit = getIntent().getIntExtra("index", -1);
         model.editGroceryList(editedGroceryData, indexToEdit);
         viewPager.setCurrentItem(1);
+    }
+
+    //onStop saves data altered in SharedViewModel by clearing old data from tables and inserting
+    // new data from livedata
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        //Update tables in database (inventory)
+        //Delete current contents
+        database.foodTileDAO().deleteInventory();
+        //Insert Live Data into new table
+        List<FoodTileInfoInventory> inventory = model.getAllInventory();
+        database.foodTileDAO().insertInventory(inventory);
+
+        //Update tables in database (grocery)
+        //delete current contents
+        database.foodTileDAO().deleteGroceryList();
+        //Insert Live Data into new table
+        List<FoodTileInfoGroceryList> grocery = model.getAllGroceryList();
+        database.foodTileDAO().insertGroceryList(grocery);
+
     }
 }

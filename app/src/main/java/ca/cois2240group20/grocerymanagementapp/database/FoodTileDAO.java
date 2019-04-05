@@ -1,6 +1,7 @@
 package ca.cois2240group20.grocerymanagementapp.database;
 
 //Room Database Import
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
 
 import ca.cois2240group20.grocerymanagementapp.database.entities.*;
@@ -21,13 +22,21 @@ public interface FoodTileDAO {
     @Query("SELECT * FROM Grocery")
     List<FoodTileInfoGroceryList> getAllGrocery();
 
-    //Insert New Food Tile
+    //Update Inventory table onClose for persistence
+    //First delete current Inventory Table
+    @Query("DELETE FROM Inventory")
+    void deleteInventory();
+    //Insert pass liveData list to insert into table
     @Insert
-    void insertTile(FoodTileInfoInventory... foodTiles);
+    void insertInventory(List<FoodTileInfoInventory> inventoryLiveData);
 
-    //Delete Tile with specific ID
-    @Delete
-    void deleteTile(FoodTileInfoInventory foodTiles);
+    //Update Grocery List table onClose
+    //First Delete current Grocery Table
+    @Query("DELETE FROM Inventory")
+    void deleteGroceryList();
+    //Insert New Live Data
+    @Insert
+    void insertGroceryList(List<FoodTileInfoGroceryList> groceryListLiveData);
 
 
 }

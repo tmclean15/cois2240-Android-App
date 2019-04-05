@@ -37,8 +37,20 @@ public class FoodTileInfoInventory implements Parcelable {
 
     protected FoodTileInfoInventory(Parcel in) {
         product = in.readString();
-        setPurchaseDate(in.readLong() == -1 ? null : new Date(in.readLong()));
-        setExpiryDate(in.readLong() == -1 ? null : new Date(in.readLong()));
+        int isPurchaseDateNull = in.readInt();
+        long purchaseDateLong = in.readLong();
+        if (isPurchaseDateNull == 0) {
+            purchaseDate = null;
+        } else {
+            purchaseDate = new Date(purchaseDateLong);
+        }
+        int isExpiryDateNull = in.readInt();
+        long expiryDateLong = in.readLong();
+        if (isExpiryDateNull == 0) {
+            expiryDate = null;
+        } else {
+            expiryDate = new Date(expiryDateLong);
+        }
         price = in.readDouble();
         quantity = in.readInt();
     }
@@ -111,8 +123,14 @@ public class FoodTileInfoInventory implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(product);
-        dest.writeLong(getPurchaseDate() != null ? getPurchaseDate().getTime() : -1);
-        dest.writeLong(getExpiryDate() != null ? getExpiryDate().getTime() : -1);
+        int isPurchaseDateNull = (getPurchaseDate() == null) ? 0 : 1;
+        long purchaseDateLong = (getPurchaseDate() == null) ? 0 : getPurchaseDate().getTime();
+        dest.writeInt(isPurchaseDateNull);
+        dest.writeLong(purchaseDateLong);
+        int isExpiryDateNull = (getExpiryDate() == null) ? 0 : 1;
+        long expiryDateLong = (getExpiryDate() == null) ? 0 : getExpiryDate().getTime();
+        dest.writeInt(isExpiryDateNull);
+        dest.writeLong(expiryDateLong);
         dest.writeDouble(price == null ? 0 : price);
         dest.writeInt(quantity == null ? 0 : quantity);
     }

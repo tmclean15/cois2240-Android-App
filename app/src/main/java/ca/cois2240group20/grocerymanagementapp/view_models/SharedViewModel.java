@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 
@@ -29,6 +30,14 @@ public class SharedViewModel extends ViewModel {
             inventoryLiveData = new MutableLiveData<List<FoodTileInfoInventory>>();
         }
         return inventoryLiveData;
+    }
+
+    public void setInventoryData(AppDatabase database) {
+        inventoryLiveData = database.foodTileDAO().getInventoryData();
+    }
+
+    public void setGroceryListData(AppDatabase database) {
+        groceryListLiveData = database.foodTileDAO().getGroceryListData();
     }
 
     public List<FoodTileInfoInventory> getAllInventory() {

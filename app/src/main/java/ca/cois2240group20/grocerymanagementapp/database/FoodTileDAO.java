@@ -2,6 +2,7 @@ package ca.cois2240group20.grocerymanagementapp.database;
 
 //Room Database Import
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.*;
 
 import ca.cois2240group20.grocerymanagementapp.database.entities.*;
@@ -16,11 +17,11 @@ public interface FoodTileDAO {
 
     //Get EVERYTHING from inventory
     @Query("SELECT * FROM Inventory")
-    LiveData<List<FoodTileInfoInventory>> getInventoryData();
+    MutableLiveData<List<FoodTileInfoInventory>> getInventoryData();
 
     //Get EVERYTHING from Grocery
     @Query("SELECT * FROM Grocery")
-    LiveData<List<FoodTileInfoGroceryList>> getGroceryListData();
+    MutableLiveData<List<FoodTileInfoGroceryList>> getGroceryListData();
 
     //Update Inventory table onClose for persistence
     //First delete current Inventory Table
@@ -28,7 +29,7 @@ public interface FoodTileDAO {
     void deleteInventory();
     //Insert pass liveData list to insert into table
     @Insert
-    void insertInventory(LiveData<List<FoodTileInfoInventory>> inventoryLiveData);
+    void insertInventory(FoodTileInfoInventory... inventoryLiveData);
 
     //Update Grocery List table onClose
     //First Delete current Grocery Table
@@ -36,7 +37,7 @@ public interface FoodTileDAO {
     void deleteGroceryList();
     //Insert New Live Data
     @Insert
-    void insertGroceryList(LiveData<List<FoodTileInfoGroceryList>> groceryListLiveData);
+    void insertGroceryList(FoodTileInfoGroceryList... groceryListLiveData);
 
 
 }

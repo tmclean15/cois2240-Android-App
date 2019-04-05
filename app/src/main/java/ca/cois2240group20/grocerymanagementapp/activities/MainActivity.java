@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
+        // Loads in data from the database into the view model
+        loadInDatabaseData(database, model);
+
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 2);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
@@ -177,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void loadInDatabase(AppDatabase database) {
-
+    protected void loadInDatabaseData(AppDatabase database, SharedViewModel model) {
+        model.setInventoryData(database);
+        model.setGroceryListData(database);
     }
 }

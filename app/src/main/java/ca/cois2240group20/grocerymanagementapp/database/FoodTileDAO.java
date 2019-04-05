@@ -16,11 +16,11 @@ public interface FoodTileDAO {
 
     //Get EVERYTHING from inventory
     @Query("SELECT * FROM Inventory")
-    List<FoodTileInfoInventory> getAllInventory();
+    LiveData<List<FoodTileInfoInventory>> getInventoryData();
 
     //Get EVERYTHING from Grocery
     @Query("SELECT * FROM Grocery")
-    List<FoodTileInfoGroceryList> getAllGrocery();
+    LiveData<List<FoodTileInfoGroceryList>> getGroceryListData();
 
     //Update Inventory table onClose for persistence
     //First delete current Inventory Table
@@ -28,7 +28,7 @@ public interface FoodTileDAO {
     void deleteInventory();
     //Insert pass liveData list to insert into table
     @Insert
-    void insertInventory(List<FoodTileInfoInventory> inventoryLiveData);
+    void insertInventory(LiveData<List<FoodTileInfoInventory>> inventoryLiveData);
 
     //Update Grocery List table onClose
     //First Delete current Grocery Table
@@ -36,7 +36,7 @@ public interface FoodTileDAO {
     void deleteGroceryList();
     //Insert New Live Data
     @Insert
-    void insertGroceryList(List<FoodTileInfoGroceryList> groceryListLiveData);
+    void insertGroceryList(LiveData<List<FoodTileInfoGroceryList>> groceryListLiveData);
 
 
 }

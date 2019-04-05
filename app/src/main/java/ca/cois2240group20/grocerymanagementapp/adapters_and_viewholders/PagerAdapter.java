@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import ca.cois2240group20.grocerymanagementapp.page_fragments.GroceryListFragment;
-import ca.cois2240group20.grocerymanagementapp.page_fragments.HomeFragment;
 import ca.cois2240group20.grocerymanagementapp.page_fragments.InventoryFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {

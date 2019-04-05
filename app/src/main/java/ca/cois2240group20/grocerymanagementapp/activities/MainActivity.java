@@ -1,5 +1,6 @@
 package ca.cois2240group20.grocerymanagementapp.activities;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,7 @@ import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAda
 import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
+import ca.cois2240group20.grocerymanagementapp.utility.App;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Grab database
+        database = App.getAppDatabase();
 
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
@@ -160,15 +165,19 @@ public class MainActivity extends AppCompatActivity {
         //Delete current contents
         database.foodTileDAO().deleteInventory();
         //Insert Live Data into new table
-        List<FoodTileInfoInventory> inventory = model.getAllInventory();
+        LiveData<List<FoodTileInfoInventory>> inventory = model.getInventoryData();
         database.foodTileDAO().insertInventory(inventory);
 
         //Update tables in database (grocery)
         //delete current contents
         database.foodTileDAO().deleteGroceryList();
         //Insert Live Data into new table
-        List<FoodTileInfoGroceryList> grocery = model.getAllGroceryList();
+        LiveData<List<FoodTileInfoGroceryList>> grocery = model.getGroceryListData();
         database.foodTileDAO().insertGroceryList(grocery);
+
+    }
+
+    protected void loadInDatabase(AppDatabase database) {
 
     }
 }

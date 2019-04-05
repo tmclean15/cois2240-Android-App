@@ -11,7 +11,12 @@ import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGro
 import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 
 public class SharedViewModel extends ViewModel {
-    // Todo: Write comment explaining why I need lists separate from the live data
+    // The reason there are separate regular lists from the LiveData lists is
+    // because LiveData list objects behave differently from regular Java lists,
+    // and cannot be used with methods that require a regular list. The regular
+    // lists are utilized in the code, and changes are reflected to the LiveData
+    // lists via a call to set value in all of the public methods in this class
+
     private List<FoodTileInfoInventory> inventoryData;
     private MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData;
 

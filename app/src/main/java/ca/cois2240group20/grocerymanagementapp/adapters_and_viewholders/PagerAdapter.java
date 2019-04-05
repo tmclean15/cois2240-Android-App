@@ -9,7 +9,7 @@ import ca.cois2240group20.grocerymanagementapp.page_fragments.HomeFragment;
 import ca.cois2240group20.grocerymanagementapp.page_fragments.InventoryFragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
-    // tab titles
+
     private String[] tabTitles = new String[]{"Inventory", "Grocery List"};
     int mNumOfTabs;
 
@@ -28,8 +28,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position) {
-            /*case 0:
-                return new HomeFragment();*/
             case 0:
                 return new InventoryFragment();
             case 1:

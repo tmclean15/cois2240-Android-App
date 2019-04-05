@@ -7,23 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.GroceryListAdapter;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.R;
-import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class GroceryListFragment extends Fragment {
@@ -60,10 +55,9 @@ public class GroceryListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
-        final Observer<List<FoodTileInfo>> observer = new Observer<List<FoodTileInfo>>() {
+        final Observer<List<FoodTileInfoGroceryList>> observer = new Observer<List<FoodTileInfoGroceryList>>() {
             @Override
-            public void onChanged(@Nullable List<FoodTileInfo> newData) {
-                // Todo: update ui
+            public void onChanged(@Nullable List<FoodTileInfoGroceryList> newData) {
                 adapter = new GroceryListAdapter(newData, recyclerView, model);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -84,9 +78,5 @@ public class GroceryListFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    public void onFabClick(View view) {
-
     }
 }

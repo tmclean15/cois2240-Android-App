@@ -12,19 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
-import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryViewHolder;
-import ca.cois2240group20.grocerymanagementapp.database.FoodTileDAO;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 
@@ -63,10 +57,9 @@ public class InventoryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
-        final Observer<List<FoodTileInfo>> observer = new Observer<List<FoodTileInfo>>() {
+        final Observer<List<FoodTileInfoInventory>> observer = new Observer<List<FoodTileInfoInventory>>() {
             @Override
-            public void onChanged(@Nullable final List<FoodTileInfo> newData) {
-                // TODO: Update the UI
+            public void onChanged(@Nullable final List<FoodTileInfoInventory> newData) {
                 adapter = new InventoryAdapter(newData, recyclerView, model);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();

@@ -13,16 +13,16 @@ import java.util.List;
 
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.activities.AddFoodTileActivity;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHolder> {
-    private List<FoodTileInfo> foodTileData;
+    private List<FoodTileInfoGroceryList> foodTileData;
     private RecyclerView recyclerView;
     private SharedViewModel model;
 
-    public GroceryListAdapter(List<FoodTileInfo> data, RecyclerView recycler, SharedViewModel viewModel) {
+    public GroceryListAdapter(List<FoodTileInfoGroceryList> data, RecyclerView recycler, SharedViewModel viewModel) {
         foodTileData = data;
         recyclerView = recycler;
         model = viewModel;
@@ -33,7 +33,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHold
     @Override
     public GroceryListViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, int i) {
         View view = (View) LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.food_tile_layout_test, viewGroup, false);
+                .inflate(R.layout.food_tile_layout, viewGroup, false);
         ImageButton removeButton = (ImageButton) view.findViewById(R.id.removeItem);
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +93,9 @@ public class GroceryListAdapter extends RecyclerView.Adapter<GroceryListViewHold
         public void onClick(View view) {
             RecyclerView.ViewHolder holder = recyclerView.findContainingViewHolder(view);
             int indexOfFoodTile = holder.getAdapterPosition();
-            FoodTileInfo dataOfFoodTile = model.accessGroceryList(indexOfFoodTile);
+            FoodTileInfoGroceryList dataOfFoodTile = model.accessGroceryList(indexOfFoodTile);
             Intent intent = new Intent(view.getContext(), AddFoodTileActivity.class);
-            intent.putExtra("FoodTileInfo", dataOfFoodTile);
+            intent.putExtra("FoodTileInfoGroceryList", dataOfFoodTile);
             intent.putExtra("index", indexOfFoodTile);
             intent.putExtra("edit", "GroceryList");
             view.getContext().startActivity(intent);

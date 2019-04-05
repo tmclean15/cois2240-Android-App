@@ -7,41 +7,42 @@ import android.arch.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 
 public class SharedViewModel extends ViewModel {
     // Todo: Write comment explaining why I need lists separate from the live data
-    private List<FoodTileInfo> inventoryData;
-    private MutableLiveData<List<FoodTileInfo>> inventoryLiveData;
+    private List<FoodTileInfoInventory> inventoryData;
+    private MutableLiveData<List<FoodTileInfoInventory>> inventoryLiveData;
 
-    private List<FoodTileInfo> groceryListData;
-    private MutableLiveData<List<FoodTileInfo>> groceryListLiveData;
+    private List<FoodTileInfoGroceryList> groceryListData;
+    private MutableLiveData<List<FoodTileInfoGroceryList>> groceryListLiveData;
 
-    public LiveData<List<FoodTileInfo>> getInventoryData() {
+    public LiveData<List<FoodTileInfoInventory>> getInventoryData() {
         if (inventoryLiveData == null) {
-            inventoryData = new ArrayList<FoodTileInfo>();
-            inventoryLiveData = new MutableLiveData<List<FoodTileInfo>>();
+            inventoryData = new ArrayList<FoodTileInfoInventory>();
+            inventoryLiveData = new MutableLiveData<List<FoodTileInfoInventory>>();
         }
         return inventoryLiveData;
     }
 
-    public List<FoodTileInfo> getAllInventory() {
+    public List<FoodTileInfoInventory> getAllInventory() {
         return inventoryData;
     }
 
-    public LiveData<List<FoodTileInfo>> getGroceryListData() {
+    public LiveData<List<FoodTileInfoGroceryList>> getGroceryListData() {
         if (groceryListLiveData == null) {
-            groceryListData = new ArrayList<FoodTileInfo>();
-            groceryListLiveData = new MutableLiveData<List<FoodTileInfo>>();
+            groceryListData = new ArrayList<FoodTileInfoGroceryList>();
+            groceryListLiveData = new MutableLiveData<List<FoodTileInfoGroceryList>>();
         }
         return groceryListLiveData;
     }
 
-    public List<FoodTileInfo> getAllGroceryList() {
+    public List<FoodTileInfoGroceryList> getAllGroceryList() {
         return groceryListData;
     }
 
-    public void addInventory(FoodTileInfo foodTile) {
+    public void addInventory(FoodTileInfoInventory foodTile) {
         inventoryData.add(foodTile);
         inventoryLiveData.setValue(inventoryData);
     }
@@ -51,16 +52,16 @@ public class SharedViewModel extends ViewModel {
         inventoryLiveData.setValue(inventoryData);
     }
 
-    public void editInventory(FoodTileInfo data, int index) {
+    public void editInventory(FoodTileInfoInventory data, int index) {
         inventoryData.set(index, data);
         inventoryLiveData.setValue(inventoryData);
     }
 
-    public FoodTileInfo accessInventory(int index) {
+    public FoodTileInfoInventory accessInventory(int index) {
         return inventoryData.get(index);
     }
 
-    public void addGroceryList(FoodTileInfo foodTile) {
+    public void addGroceryList(FoodTileInfoGroceryList foodTile) {
         groceryListData.add(foodTile);
         groceryListLiveData.setValue(groceryListData);
     }
@@ -70,12 +71,12 @@ public class SharedViewModel extends ViewModel {
         groceryListLiveData.setValue(groceryListData);
     }
 
-    public void editGroceryList(FoodTileInfo data, int index) {
+    public void editGroceryList(FoodTileInfoGroceryList data, int index) {
         groceryListData.set(index, data);
         groceryListLiveData.setValue(groceryListData);
     }
 
-    public FoodTileInfo accessGroceryList(int index) {
+    public FoodTileInfoGroceryList accessGroceryList(int index) {
         return groceryListData.get(index);
     }
 }

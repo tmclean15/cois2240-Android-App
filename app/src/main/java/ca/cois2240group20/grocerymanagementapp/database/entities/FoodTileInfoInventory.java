@@ -1,15 +1,16 @@
-package ca.cois2240group20.grocerymanagementapp.utility;
+package ca.cois2240group20.grocerymanagementapp.database.entities;
 
 import android.arch.persistence.room.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Currency;
 import java.util.Date;
 
-@Entity
+import ca.cois2240group20.grocerymanagementapp.utility.DateConverter;
+
+@Entity (tableName = "Inventory")
 @TypeConverters(DateConverter.class)
-public class FoodTileInfo implements Parcelable {
+public class FoodTileInfoInventory implements Parcelable {
     @PrimaryKey(autoGenerate = true) //Will auto make primary Key
     private Integer id;
     //Non-Identifying columns
@@ -24,8 +25,8 @@ public class FoodTileInfo implements Parcelable {
     @ColumnInfo(name = "quantity")
     private Integer quantity;
 
-    public FoodTileInfo(String product, Date purchaseDate, Date expiryDate, Double price,
-                        int quantity) {
+    public FoodTileInfoInventory(String product, Date purchaseDate, Date expiryDate, Double price,
+                                 int quantity) {
         this.product = product;
         this.purchaseDate = purchaseDate;
         this.expiryDate = expiryDate;
@@ -34,38 +35,23 @@ public class FoodTileInfo implements Parcelable {
     }
 
 
-    protected FoodTileInfo(Parcel in) {
+    protected FoodTileInfoInventory(Parcel in) {
         product = in.readString();
-        int isPurchaseDateNull = in.readInt();
-        long purchaseDateLong = in.readLong();
-        if (isPurchaseDateNull == 0) {
-            purchaseDate = null;
-        } else {
-            purchaseDate = new Date(purchaseDateLong);
-        }
-        int isExpiryDateNull = in.readInt();
-        long expiryDateLong = in.readLong();
-        if (isExpiryDateNull == 0) {
-            expiryDate = null;
-        } else {
-            expiryDate = new Date(expiryDateLong);
-        }
-        //purchaseDate = in.readLong() == -1 ? null : new Date(in.readLong());
-        //expiryDate = in.readLong() == -1 ? null : new Date(in.readLong());
+        setPurchaseDate(in.readLong() == -1 ? null : new Date(in.readLong()));
+        setExpiryDate(in.readLong() == -1 ? null : new Date(in.readLong()));
         price = in.readDouble();
         quantity = in.readInt();
-
     }
 
-    public static final Creator<FoodTileInfo> CREATOR = new Creator<FoodTileInfo>() {
+    public static final Creator<FoodTileInfoInventory> CREATOR = new Creator<FoodTileInfoInventory>() {
         @Override
-        public FoodTileInfo createFromParcel(Parcel in) {
-            return new FoodTileInfo(in);
+        public FoodTileInfoInventory createFromParcel(Parcel in) {
+            return new FoodTileInfoInventory(in);
         }
 
         @Override
-        public FoodTileInfo[] newArray(int size) {
-            return new FoodTileInfo[size];
+        public FoodTileInfoInventory[] newArray(int size) {
+            return new FoodTileInfoInventory[size];
         }
     };
 
@@ -125,16 +111,11 @@ public class FoodTileInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(product);
-        int isPurchaseDateNull = (getPurchaseDate() == null) ? 0 : 1;
-        long purchaseDateLong = (getPurchaseDate() == null) ? 0 : getPurchaseDate().getTime();
-        dest.writeInt(isPurchaseDateNull);
-        dest.writeLong(purchaseDateLong);
-        int isExpiryDateNull = (getExpiryDate() == null) ? 0 : 1;
-        long expiryDateLong = (getExpiryDate() == null) ? 0 : getExpiryDate().getTime();
-        dest.writeInt(isExpiryDateNull);
-        dest.writeLong(expiryDateLong);
+        dest.writeLong(getPurchaseDate() != null ? getPurchaseDate().getTime() : -1);
+        dest.writeLong(getExpiryDate() != null ? getExpiryDate().getTime() : -1);
         dest.writeDouble(price == null ? 0 : price);
         dest.writeInt(quantity == null ? 0 : quantity);
     }
+
 
 }

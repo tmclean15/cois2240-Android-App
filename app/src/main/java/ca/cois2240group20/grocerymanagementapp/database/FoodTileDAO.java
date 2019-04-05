@@ -3,7 +3,7 @@ package ca.cois2240group20.grocerymanagementapp.database;
 //Room Database Import
 import android.arch.persistence.room.*;
 
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.entities.*;
 
 //Util Import
 import java.util.List;
@@ -13,17 +13,21 @@ import java.util.List;
 public interface FoodTileDAO {
     //Query
 
-    //Get EVERYTHING
-    @Query("SELECT * FROM FoodTileInfo")
-    List<FoodTileInfo> getAll();
+    //Get EVERYTHING from inventory
+    @Query("SELECT * FROM Inventory")
+    List<FoodTileInfoInventory> getAllInventory();
+
+    //Get EVERYTHING from Grocery
+    @Query("SELECT * FROM Grocery")
+    List<FoodTileInfoGroceryList> getAllGrocery();
 
     //Insert New Food Tile
     @Insert
-    void insertTile(FoodTileInfo... foodTiles);
+    void insertTile(FoodTileInfoInventory... foodTiles);
 
     //Delete Tile with specific ID
     @Delete
-    void deleteTile(FoodTileInfo foodTiles);
+    void deleteTile(FoodTileInfoInventory foodTiles);
 
 
 }

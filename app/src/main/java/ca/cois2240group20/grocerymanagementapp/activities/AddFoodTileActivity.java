@@ -1,28 +1,27 @@
 package ca.cois2240group20.grocerymanagementapp.activities;
 
 import android.app.DatePickerDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import ca.cois2240group20.grocerymanagementapp.R;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
-import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class AddFoodTileActivity extends FragmentActivity {
+    private static final String TAG = "AddFoodTileActivity";
     private EditText mDisplayProduct;
     private EditText mDisplayQuantity;
     private EditText mDisplayPrice;
@@ -48,18 +47,37 @@ public class AddFoodTileActivity extends FragmentActivity {
 
         // If this activity was launched from an edit button listener, we want to pre-populate
         // the UI with the data of the food tile being edited
-        FoodTileInfo dataToBeEdited;
+        FoodTileInfoInventory inventoryToBeEdited;
+        FoodTileInfoGroceryList groceryToBeEdited;
+
         if (launchIntent.getStringExtra("edit") != null) {
-            dataToBeEdited = launchIntent.getParcelableExtra("FoodTileInfo");
-            mDisplayProduct.setText(Utility.trySetString(dataToBeEdited.getProduct()));
-            String purchaseDateText = Utility.trySetDateString(dataToBeEdited.getPurchaseDate());
-            mDisplayPurchaseDate.setText(purchaseDateText);
-            String expiryDateText = Utility.trySetDateString(dataToBeEdited.getExpiryDate());
-            mDisplayExpiryDate.setText(expiryDateText);
-            String priceText = Utility.trySetString(dataToBeEdited.getPrice().toString());
-            mDisplayPrice.setText(priceText);
-            String quantityText = Utility.trySetString(dataToBeEdited.getQuantity().toString());
-            mDisplayQuantity.setText(quantityText);
+            if (launchIntent.getStringExtra("edit").equals("Inventory")) {
+                inventoryToBeEdited = launchIntent.getParcelableExtra("FoodTileInfoInventory");
+                mDisplayProduct.setText(Utility.trySetString(inventoryToBeEdited.getProduct()));
+                String purchaseDateText = Utility.trySetDateString(inventoryToBeEdited.getPurchaseDate());
+                mDisplayPurchaseDate.setText(purchaseDateText);
+                String expiryDateText = Utility.trySetDateString(inventoryToBeEdited.getExpiryDate());
+                mDisplayExpiryDate.setText(expiryDateText);
+                String priceText = Utility.trySetString(inventoryToBeEdited.getPrice().toString());
+                mDisplayPrice.setText(priceText);
+                String quantityText = Utility.trySetString(inventoryToBeEdited.getQuantity().toString());
+                mDisplayQuantity.setText(quantityText);
+            }
+            else if (launchIntent.getStringExtra("edit").equals("GroceryList")) {
+                groceryToBeEdited = launchIntent.getParcelableExtra("FoodTileInfoGroceryList");
+                mDisplayProduct.setText(Utility.trySetString(groceryToBeEdited.getProduct()));
+                String purchaseDateText = Utility.trySetDateString(groceryToBeEdited.getPurchaseDate());
+                mDisplayPurchaseDate.setText(purchaseDateText);
+                String expiryDateText = Utility.trySetDateString(groceryToBeEdited.getExpiryDate());
+                mDisplayExpiryDate.setText(expiryDateText);
+                String priceText = Utility.trySetString(groceryToBeEdited.getPrice().toString());
+                mDisplayPrice.setText(priceText);
+                String quantityText = Utility.trySetString(groceryToBeEdited.getQuantity().toString());
+                mDisplayQuantity.setText(quantityText);
+            }
+            else {
+                Log.d(TAG, "Edit was launched with improper data");
+            }
         }
 
         // The next few lines of code set up the DatePickerDialog widgets, along with listeners to
@@ -133,10 +151,7 @@ public class AddFoodTileActivity extends FragmentActivity {
                 Double price = Utility.tryParseDouble(mDisplayPrice.getText().toString());
                 int quantity = Utility.tryParseInt(mDisplayQuantity.getText().toString());
 
-                FoodTileInfo data = new FoodTileInfo(product, purchaseDate, expiryDate, price, quantity);
-
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("FoodTileInfo", data);
 
                 // Depending on which fragment sent the intent (InventoryFragment or GroceryListFragment)
                 // a new intent will be sent back to MainActivity, with extra information to tell
@@ -144,15 +159,22 @@ public class AddFoodTileActivity extends FragmentActivity {
 
                 if (launchIntent.getStringExtra("method") != null) {
                     if (launchIntent.getStringExtra("method").equals("Inventory")) {
+                        FoodTileInfoInventory data = new FoodTileInfoInventory(product, purchaseDate,
+                                expiryDate, price, quantity);
+                        intent.putExtra("FoodTileInfoInventory", data);
                         intent.putExtra("method", "addInventory");
                         startActivity(intent);
                     } else if (launchIntent.getStringExtra("method").equals("GroceryList")) {
+                        FoodTileInfoGroceryList data = new FoodTileInfoGroceryList(product, purchaseDate,
+                                expiryDate, price, quantity);
+                        intent.putExtra("FoodTileInfoGroceryList", data);
                         intent.putExtra("method", "addGroceryList");
                         startActivity(intent);
                     } else {
                         // If the intent that launched this activity was not launched by either
                         // Inventory or GroceryList, then an error occurred that should be handled
                         // by MainActivity. This shouldn't happen, but just in case
+                        Log.d(TAG, "Error adding food tile");
                         intent.putExtra("method", "error");
                         startActivity(intent);
                     }
@@ -162,16 +184,20 @@ public class AddFoodTileActivity extends FragmentActivity {
                 if (launchIntent.getStringExtra("edit") != null) {
                     int indexBeingEdited = launchIntent.getIntExtra("index", -1);
                     if (launchIntent.getStringExtra("edit").equals("Inventory")) {
+                        FoodTileInfoInventory data = new FoodTileInfoInventory(product, purchaseDate,
+                                expiryDate, price, quantity);
+                        intent.putExtra("FoodTileInfoInventory", data);
                         intent.putExtra("edit", "editInventory");
                         intent.putExtra("index", indexBeingEdited);
                         startActivity(intent);
-                    }
-                    else if (launchIntent.getStringExtra("edit").equals("GroceryList")) {
+                    } else if (launchIntent.getStringExtra("edit").equals("GroceryList")) {
+                        FoodTileInfoGroceryList data = new FoodTileInfoGroceryList(product, purchaseDate,
+                                expiryDate, price, quantity);
+                        intent.putExtra("FoodTileInfoGroceryList", data);
                         intent.putExtra("edit", "editGroceryList");
                         intent.putExtra("index", indexBeingEdited);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         intent.putExtra("edit", "error");
                         startActivity(intent);
                     }

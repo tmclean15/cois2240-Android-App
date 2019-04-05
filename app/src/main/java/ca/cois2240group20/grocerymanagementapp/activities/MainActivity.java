@@ -11,7 +11,8 @@ import android.util.Log;
 
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoGroceryList;
+import ca.cois2240group20.grocerymanagementapp.database.entities.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
 
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 3);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 2);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
 
@@ -117,30 +118,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addInventory() {
-        FoodTileInfo newInvData = getIntent().getParcelableExtra("FoodTileInfo");
+        FoodTileInfoInventory newInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
         model.addInventory(newInvData);
         // We want to display the page that we initially clicked the floating action button
         // to add an item from, in this case InventoryFragment
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
     }
 
     private void editInventory() {
-        FoodTileInfo editedInvData = getIntent().getParcelableExtra("FoodTileInfo");
+        FoodTileInfoInventory editedInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
         int indexToEdit = getIntent().getIntExtra("index", -1);
         model.editInventory(editedInvData, indexToEdit);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
     }
 
     private void addGroceryList() {
-        FoodTileInfo newGroceryData = getIntent().getParcelableExtra("FoodTileInfo");
+        FoodTileInfoGroceryList newGroceryData = getIntent().getParcelableExtra("FoodTileInfoGroceryList");
         model.addGroceryList(newGroceryData);
-        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(1);
     }
 
     private void editGroceryList() {
-        FoodTileInfo editedGroceryData = getIntent().getParcelableExtra("FoodTileInfo");
+        FoodTileInfoGroceryList editedGroceryData = getIntent().getParcelableExtra("FoodTileInfoGroceryList");
         int indexToEdit = getIntent().getIntExtra("index", -1);
         model.editGroceryList(editedGroceryData, indexToEdit);
-        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(1);
     }
 }

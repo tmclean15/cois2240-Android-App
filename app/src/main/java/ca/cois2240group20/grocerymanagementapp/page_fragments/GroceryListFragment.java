@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.InventoryAdapter;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
@@ -30,10 +30,10 @@ public class GroceryListFragment extends Fragment {
 
     // Just some dummy data
     Date date = new Date();
-    FoodTileInfo tile1 = new FoodTileInfo("apples", date, date, 20.00, 5);
-    FoodTileInfo tile2 = new FoodTileInfo("apples", date, date, 20.00, 5);
-    FoodTileInfo tile3 = new FoodTileInfo("apples", date, date, 20.00, 5);
-    List<FoodTileInfo> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));
+    FoodTileInfoInventory tile1 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
+    FoodTileInfoInventory tile2 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
+    FoodTileInfoInventory tile3 = new FoodTileInfoInventory("apples", date, date, 20.00, 5);
+    List<FoodTileInfoInventory> data = new ArrayList<>(Arrays.asList(tile1,tile2,tile3));
 
     @Override
     public View onCreateView(final LayoutInflater inflater,
@@ -56,9 +56,9 @@ public class GroceryListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Create the observer which updates the UI when live data in view model changes
-        final Observer<List<FoodTileInfo>> observer = new Observer<List<FoodTileInfo>>() {
+        final Observer<List<FoodTileInfoInventory>> observer = new Observer<List<FoodTileInfoInventory>>() {
             @Override
-            public void onChanged(@Nullable List<FoodTileInfo> foodTileInfos) {
+            public void onChanged(@Nullable List<FoodTileInfoInventory> foodTileInfos) {
                 // Todo: update ui
             }
         };

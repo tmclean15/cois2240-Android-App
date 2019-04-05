@@ -1,7 +1,6 @@
 package ca.cois2240group20.grocerymanagementapp.activities;
 
 import android.app.DatePickerDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,15 +11,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import ca.cois2240group20.grocerymanagementapp.R;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
-import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class AddFoodTileActivity extends FragmentActivity {
     private EditText mDisplayProduct;
@@ -31,7 +27,7 @@ public class AddFoodTileActivity extends FragmentActivity {
     private DatePickerDialog.OnDateSetListener mPurchaseDateSetListener;
     private DatePickerDialog.OnDateSetListener mExpiryDateSetListener;
 
-    private FoodTileInfo data;
+    private FoodTileInfoInventory data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,10 +104,10 @@ public class AddFoodTileActivity extends FragmentActivity {
                 Double price = Utility.tryParseDouble(mDisplayPrice.getText().toString());
                 int quantity = Utility.tryParseInt(mDisplayQuantity.getText().toString());
 
-                data = new FoodTileInfo(product, purchaseDate, expiryDate, price, quantity);
+                data = new FoodTileInfoInventory(product, purchaseDate, expiryDate, price, quantity);
 
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("FoodTileInfo", data);
+                intent.putExtra("FoodTileInfoInventory", data);
                 intent.putExtra("method", "addInventory");
                 // intent.setFlags(Intent.);
                 startActivity(intent);

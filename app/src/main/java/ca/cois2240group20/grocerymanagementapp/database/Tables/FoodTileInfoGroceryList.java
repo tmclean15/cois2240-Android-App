@@ -1,14 +1,16 @@
-package ca.cois2240group20.grocerymanagementapp.utility;
+package ca.cois2240group20.grocerymanagementapp.database.Tables;
 
 import android.arch.persistence.room.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Currency;
 import java.util.Date;
 
-@Entity
-public class FoodTileInfo implements Parcelable {
+import ca.cois2240group20.grocerymanagementapp.utility.DateConverter;
+
+@Entity (tableName = "Grocery")
+@TypeConverters(DateConverter.class)
+public class FoodTileInfoGroceryList implements Parcelable {
     @PrimaryKey(autoGenerate = true) //Will auto make primary Key
     private Integer id;
     //Non-Identifying columns
@@ -23,9 +25,8 @@ public class FoodTileInfo implements Parcelable {
     @ColumnInfo(name = "quantity")
     private Integer quantity;
 
-    public FoodTileInfo(Integer id, String product, Date purchaseDate, Date expiryDate, Double price,
-                        int quantity) {
-        this.id = id;
+    public FoodTileInfoGroceryList(String product, Date purchaseDate, Date expiryDate, Double price,
+                                   int quantity) {
         this.product = product;
         this.purchaseDate = purchaseDate;
         this.expiryDate = expiryDate;
@@ -34,7 +35,7 @@ public class FoodTileInfo implements Parcelable {
     }
 
 
-    protected FoodTileInfo(Parcel in) {
+    protected FoodTileInfoGroceryList(Parcel in) {
         product = in.readString();
         setPurchaseDate(in.readLong() == -1 ? null : new Date(in.readLong()));
         setExpiryDate(in.readLong() == -1 ? null : new Date(in.readLong()));
@@ -42,17 +43,25 @@ public class FoodTileInfo implements Parcelable {
         quantity = in.readInt();
     }
 
-    public static final Creator<FoodTileInfo> CREATOR = new Creator<FoodTileInfo>() {
+    public static final Parcelable.Creator<FoodTileInfoGroceryList> CREATOR = new Parcelable.Creator<FoodTileInfoGroceryList>() {
         @Override
-        public FoodTileInfo createFromParcel(Parcel in) {
-            return new FoodTileInfo(in);
+        public FoodTileInfoGroceryList createFromParcel(Parcel in) {
+            return new FoodTileInfoGroceryList(in);
         }
 
         @Override
-        public FoodTileInfo[] newArray(int size) {
-            return new FoodTileInfo[size];
+        public FoodTileInfoGroceryList[] newArray(int size) {
+            return new FoodTileInfoGroceryList[size];
         }
     };
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getProduct() {
         return product;
@@ -86,11 +95,11 @@ public class FoodTileInfo implements Parcelable {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -107,4 +116,7 @@ public class FoodTileInfo implements Parcelable {
         dest.writeDouble(price == null ? 0 : price);
         dest.writeInt(quantity == null ? 0 : quantity);
     }
+
+
 }
+

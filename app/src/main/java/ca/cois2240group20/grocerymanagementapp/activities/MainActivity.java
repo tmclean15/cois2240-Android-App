@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import java.util.List;
+
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders.PagerAdapter;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.AppDatabase;
+import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoGroceryList;
+import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
+import ca.cois2240group20.grocerymanagementapp.utility.App;
 
 public class MainActivity extends AppCompatActivity {
     // The viewPager is the main layout widget that will show all the different page fragments
@@ -21,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     // View model is a shared state among the activity and its associated fragments
     SharedViewModel model;
 
+    private AppDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up view model for this activity. It will be used to share data with page fragments
         model = ViewModelProviders.of(this).get(SharedViewModel.class);
+
+        //Get Data from Database - Inventory
+        database = App.getAppDataBase();
+        //load inventory
+        List<FoodTileInfoInventory> inventory = database.foodTileDAO().getAllInventory();
+        model.setInventoryData(inventory);
+        //load grocery list
+        List<FoodTileInfoGroceryList> grocery = database.foodTileDAO().getAllGrocery();
+        model.setGroceryData(grocery);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 3);
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -99,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addInventory() {
-        FoodTileInfo newInvData = getIntent().getParcelableExtra("FoodTileInfo");
+        FoodTileInfoInventory newInvData = getIntent().getParcelableExtra("FoodTileInfoInventory");
         model.addInventory(newInvData);
     }
 }

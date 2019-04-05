@@ -1,7 +1,5 @@
 package ca.cois2240group20.grocerymanagementapp.adapters_and_viewholders;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,19 +10,17 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ca.cois2240group20.grocerymanagementapp.activities.MainActivity;
-import ca.cois2240group20.grocerymanagementapp.utility.App;
-import ca.cois2240group20.grocerymanagementapp.utility.FoodTileInfo;
+import ca.cois2240group20.grocerymanagementapp.database.Tables.FoodTileInfoInventory;
 import ca.cois2240group20.grocerymanagementapp.R;
 import ca.cois2240group20.grocerymanagementapp.utility.Utility;
 import ca.cois2240group20.grocerymanagementapp.view_models.SharedViewModel;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder> {
-    private List<FoodTileInfo> foodTileData;
+    private List<FoodTileInfoInventory> foodTileData;
     private RecyclerView recyclerView;
     private SharedViewModel model;
 
-    public InventoryAdapter(List<FoodTileInfo> data, RecyclerView recycler, SharedViewModel viewModel) {
+    public InventoryAdapter(List<FoodTileInfoInventory> data, RecyclerView recycler, SharedViewModel viewModel) {
         foodTileData = data;
         recyclerView = recycler;
         model = viewModel;

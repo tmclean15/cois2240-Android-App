@@ -1,4 +1,4 @@
-# cois2240GroupProject
+# cois2240-Android-App     
 
 ##Group 20
 
